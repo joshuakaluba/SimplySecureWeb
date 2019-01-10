@@ -1,0 +1,32 @@
+/* You can add global styles to this file, and also import other style files */
+
+$blue: #2196F3 !default;
+$indigo: #6610f2 !default;
+$purple: #6f42c1 !default;
+$pink: #e83e8c !default;
+$red: #e51c23 !default;
+$orange: #fd7e14 !default;
+$yellow: #ff9800 !default;
+$green: #4CAF50 !default;
+$teal: #20c997 !default;
+$cyan: #9C27B0 !default;
+
+$primary: #000 !default;
+$secondary: $blue !default;
+$success: $green !default;
+$info: $cyan !default;
+$warning: $yellow !default;
+$danger: $red !default;
+
+@import "node_modules/bootswatch/dist/minty/variables";
+@import "node_modules/bootstrap/scss/bootstrap";
+@import "node_modules/bootswatch/dist/minty/bootswatch";
+
+@import '~@swimlane/ngx-datatable/release/index.css';
+@import '~@swimlane/ngx-datatable/release/themes/material.css';
+@import '~@swimlane/ngx-datatable/release/assets/icons.css';
+
+body,
+html {
+  height: 100%;
+}
