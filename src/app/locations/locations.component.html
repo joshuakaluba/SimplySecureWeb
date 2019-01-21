@@ -1,0 +1,245 @@
+<h2 class="text-center">Locations</h2>
+<hr>
+
+
+
+<div class="row">
+  <div class="col">
+    <p>
+      <button type="button" class="btn btn-outline-primary" (click)="openCreateNewModal(createNewLocationModal)">Create
+        New Location</button>
+    </p>
+  </div>
+</div>
+
+<div *ngIf="invalidInput" class="row justify-content-center">
+  <div class="alert alert-danger alert-dismissible fade show col-md-7" role="alert">
+
+    <p class="text-center">{{errorMessage}}</p>
+
+    <button type="button" class="close" (click)="invalidInput=false;" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+</div>
+
+<div *ngIf="successResult" class="row justify-content-center">
+  <div class="alert alert-success alert-dismissible fade show col-md-7" role="alert">
+
+    <p class="text-center">{{successMessage}}</p>
+
+    <button type="button" class="close" (click)="successResult=false;" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="row">
+    <div class="col">
+
+      <div>
+        
+        <ngx-datatable [rows]="rows" [headerHeight]="50" [footerHeight]="50" [columnMode]="'force'"
+          [limit]="10" [selectionType]="'single'" (select)='onSelect($event)' [rowHeight]="'auto'" [reorderable]="reorderable"
+          class="material striped">
+
+          <ngx-datatable-column name="name">
+            <ng-template let-column="column" ngx-datatable-header-template>
+              Name
+            </ng-template>
+            <ng-template let-value="value" ngx-datatable-cell-template>
+              {{value}}
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column name="armed">
+            <ng-template let-column="column" ngx-datatable-header-template>
+              Armed
+            </ng-template>
+            <ng-template let-value="value" ngx-datatable-cell-template>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" [checked]="value" disabled>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+
+
+          <ngx-datatable-column name="isSilentAlarm">
+            <ng-template let-column="column" ngx-datatable-header-template>
+              Is Silent Alarm
+            </ng-template>
+            <ng-template let-value="value" ngx-datatable-cell-template>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" [checked]="value" disabled>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+
+        </ngx-datatable>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="deleteLocationModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Delete Location</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="row">
+          <div class="col">
+            <p>Are you sure you want to delete: {{selectedLocation.name}}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+
+        <button type="button" (click)="confirmedLocationDelete()" class="btn btn-danger">
+          Delete
+        </button>
+
+        <img *ngIf="loading" class="pl-3" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" autofocus>
+          Close
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="locationDetailsModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Location</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="row">
+          <div class="col">
+
+            <div class="form-group">
+              <div class="row">
+                <div class="col">
+                    <a [routerLink]="['/modules', selectedLocation.id]" class="btn btn-block btn-outline-primary" data-dismiss="modal">Manage Modules</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="newLocationName">Location name:</label>
+              <input name="name" class="form-control" [(ngModel)]="selectedLocation.name" required placeholder="Please enter the name of the new location">
+            </div>
+
+            <div class="form-group">
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input name="isSilentAlarm" [(ngModel)]="selectedLocation.isSilentAlarm" class="form-check-input"
+                    type="checkbox">
+                  Silent Alarm
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group">
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input name="isSilentAlarm" [(ngModel)]="selectedLocation.armed" class="form-check-input"
+                      type="checkbox">
+                    Armed
+                  </label>
+                </div>
+              </div>
+
+            <div class="row justify-content-center" >
+              <img src="../../assets/img/lock.png" (click)="selectedLocation.armed=!selectedLocation.armed" [style.backgroundColor] = "selectedLocation.armed ? 'red' : 'green'"  class="armed-image img-fluid roounded">
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-danger" aria-label="Left Align" (click)="showDeleteConfrimationModal()">
+          <span class="fa fa-trash-o fa-lg" aria-hidden="true"></span>
+        </button>
+
+        <button type="button" [disabled]="!selectedLocation.isValid()" (click)="saveLocationChanges()" class="btn btn-primary">
+          Save Changes
+        </button>
+
+        <img *ngIf="loading" class="pl-3" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" autofocus>
+          Close
+        </button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #createNewLocationModal let-modal>
+
+  <form #createNewLocationForm="ngForm" (ngSubmit)="createNewLocation()" ngNativeValidate>
+    <div class="modal-header">
+      <h4 class="modal-title">Create New Location</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col">
+
+          <div class="form-group">
+            <label for="newLocationName">Location name:</label>
+            <input id="name" name="name" class="form-control" [(ngModel)]="newLocation.name" required placeholder="Please enter the name of the new location">
+          </div>
+
+          <div class="form-group">
+            <div class="form-check">
+              <label class="form-check-label">
+                <input id="isSilentAlarm" name="isSilentAlarm" [(ngModel)]="newLocation.isSilentAlarm" class="form-check-input"
+                  type="checkbox">
+                Is this location a silent alarm?
+              </label>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+
+      <div class="form-group">
+        <button [disabled]="!newLocation.isValid()" class="btn btn-primary" type="submit">Save Location</button>
+        <img *ngIf="loading" class="pl-3" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+      </div>
+
+      <div class="form-group">
+        <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss()" autofocus>Cancel</button>
+      </div>
+
+    </div>
+  </form>
+</ng-template>
