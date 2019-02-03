@@ -1,11 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
-import { HttpClientModule} from '@angular/common/http';
-import { ReactiveFormsModule }    from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
 import { AuthGuard } from './guards/auth-guard.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,13 +18,13 @@ import { LocationsComponent } from './locations/locations.component';
 import { FooterComponent } from './footer/footer.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { PrivacyComponent } from './privacy/privacy.component';
-import { ModulesComponent } from './modules/modules.component';
 import { BaseComponent } from './base/base.component';
+import { ManageLocationComponent } from './manage-location/manage-location.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,    
+    LoginComponent,
     NavbarComponent,
     RegisterComponent,
     HomeComponent,
@@ -32,8 +32,8 @@ import { BaseComponent } from './base/base.component';
     LocationsComponent,
     FooterComponent,
     PrivacyComponent,
-    ModulesComponent,
-    BaseComponent
+    BaseComponent,
+    ManageLocationComponent
   ],
   imports: [
     FormsModule,
@@ -41,11 +41,11 @@ import { BaseComponent } from './base/base.component';
     AngularFontAwesomeModule,
     NgxDatatableModule,
     BrowserModule,
-    ReactiveFormsModule, 
+    ReactiveFormsModule,
     AppRoutingModule,
     HttpClientModule
   ],
-  providers: [AuthGuard, {provide: LocationStrategy, useClass: HashLocationStrategy}],
+  providers: [AuthGuard, { provide: LocationStrategy, useClass: HashLocationStrategy }],
   bootstrap: [AppComponent]
 })
 
