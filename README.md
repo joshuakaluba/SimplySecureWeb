@@ -4,7 +4,7 @@ This project is a front-end for the [Simply Secure Api](https://github.com/joshu
 
 ## Installation
 
-Modify  `/src/environments/environment.sample.ts` and `/src/environments/environment.prod.sample.ts` with valid endpoints for both dev and production. Once modified, rename the files to the specified file names in the documents.
+Modify  `/src/environments/environment.ts` and `/src/environments/environment.prod.ts` with valid endpoints for both dev and production.
 
 Run `npm install` to install dependancies.
 
