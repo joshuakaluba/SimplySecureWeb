@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-base',
@@ -13,4 +14,32 @@ export class BaseComponent {
   public successResult: boolean = false;
 
   constructor() { }
+
+  showError(err) {
+    if (err.error.message) {
+      this.errorMessage = err.error.message;
+    } else {
+      this.errorMessage = err;
+    }
+
+    this.invalidInput = true;
+  }
+
+  copyToClipboard(item) {
+    document.addEventListener('copy', (e: ClipboardEvent) => {
+      e.clipboardData.setData('text/plain', (item));
+      e.preventDefault();
+      document.removeEventListener('copy', null);
+    });
+    document.execCommand('copy');
+  }
+
+  public getFormattedDate(dateToFormat) {
+    return moment.utc(dateToFormat).local().format("hh:mm:ss A - ddd, MMM Do, YYYY");
+  }
+
+  public getFormattedShortDate(dateToFormat) {
+    return moment.utc(dateToFormat).local().format("MMM Do, YYYY");
+  }
+
 }
