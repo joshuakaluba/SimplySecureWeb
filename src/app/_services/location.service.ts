@@ -11,15 +11,15 @@ export class LocationService extends BaseAuthenticatedService {
 
   createNewLocation(location: Location) {
     return this.http.post(
-      `${this.apiUrl}/Home/CreateNewLocation`,
+      `${this.apiUrl}/Locations/CreateLocation/`,
       location,
       this.options
     );
   }
 
-  updateLocation(location: Location) {
+  updateLocationArmedState(location: Location) {
     return this.http.post(
-      `${this.apiUrl}/Home/UpdateLocation`,
+      `${this.apiUrl}/Locations/ArmLocation/`,
       location,
       this.options
     );
@@ -27,18 +27,18 @@ export class LocationService extends BaseAuthenticatedService {
 
   deleteLocation(location: Location) {
     return this.http.delete(
-      `${this.apiUrl}/Home/DeleteLocation/${location.id}`,
+      `${this.apiUrl}/Locations/DeleteLocation/${location.id}`,
       this.options
     );
   }
 
   getAllLocations() {
-    return this.http.get(`${this.apiUrl}/Home/GetAllLocations`, this.options);
+    return this.http.get(`${this.apiUrl}/Locations/GetLocations`, this.options);
   }
 
   getLocation(locationId: string) {
     return this.http.get(
-      `${this.apiUrl}/Home/GetLocation/${locationId}`,
+      `${this.apiUrl}/Locations/GetLocation/${locationId}`,
       this.options
     );
   }
