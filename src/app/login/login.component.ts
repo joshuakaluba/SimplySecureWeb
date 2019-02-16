@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private authenticationService: AuthenticationService,
     private alertService: AlertService
-  ) {}
+  ) { }
   ngOnInit() {
     if (this.authenticationService.isUserAuthenticated()) {
       this.router.navigate(["/locations"]);
@@ -30,7 +30,6 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.userService.login(form.value).subscribe(
       response => {
-        this.alertService.success("Login successful", true);
         this.loading = false;
 
         let user = <any>response;
@@ -40,7 +39,6 @@ export class LoginComponent implements OnInit {
         this.router.navigate(["/locations"]);
       },
       err => {
-        console.log(err);
         this.errorMessage = err.error.message;
         this.loading = false;
         this.invalidInput = true;

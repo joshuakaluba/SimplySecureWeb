@@ -15,11 +15,11 @@ export class BaseComponent {
 
   constructor() { }
 
-  showError(err) {
-    if (err.error.message) {
-      this.errorMessage = err.error.message;
+  showError(error: any) {
+    if (error.error.message) {
+      this.errorMessage = error.error.message;
     } else {
-      this.errorMessage = err;
+      this.errorMessage = error;
     }
 
     this.invalidInput = true;

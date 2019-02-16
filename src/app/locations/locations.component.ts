@@ -1,11 +1,9 @@
 import { Component, OnInit } from "@angular/core";
-import { NgForm } from "@angular/forms";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { LocationService } from "../_services";
 import { Location } from "../_models";
 import { BaseComponent } from "../base/base.component";
 
-//http://swimlane.github.io/ngx-datatable/#basic-fixed
 declare var $: any;
 
 @Component({
@@ -14,12 +12,11 @@ declare var $: any;
   styleUrls: ["./locations.component.scss"]
 })
 export class LocationsComponent extends BaseComponent implements OnInit {
-  
-  
+
+
   newLocation: Location = new Location();
   selectedLocation: Location = new Location();
   reorderable: boolean = true;
-
   rows = [];
 
   constructor(
@@ -27,7 +24,6 @@ export class LocationsComponent extends BaseComponent implements OnInit {
     private locationService: LocationService
   ) {
     super();
-    this.rows = [];
   }
 
   ngOnInit() {
@@ -40,7 +36,7 @@ export class LocationsComponent extends BaseComponent implements OnInit {
         this.rows = <any>response;
       },
       err => {
-        console.log(err);
+        this.showError(err);
       }
     );
   }
@@ -52,6 +48,7 @@ export class LocationsComponent extends BaseComponent implements OnInit {
     this.selectedLocation.name = selected[0].name;
     this.selectedLocation.armed = selected[0].armed;
     this.selectedLocation.isSilentAlarm = selected[0].isSilentAlarm;
+    this.selectedLocation.status = selected[0].status;
 
     $("#locationDetailsModal").modal("show");
   }
@@ -60,13 +57,7 @@ export class LocationsComponent extends BaseComponent implements OnInit {
     this.modalService.open(createNewLocationModal);
   }
 
-  showDeleteConfrimationModal() {
-    $("#locationDetailsModal").modal("hide");
-    $("#deleteLocationModal").modal("show");
-  }
-
   confirmedLocationDelete() {
-    $("#deleteLocationModal").modal("hide");
 
     this.loading = true;
 
@@ -80,48 +71,29 @@ export class LocationsComponent extends BaseComponent implements OnInit {
         this.successResult = true;
       },
       err => {
-        this.loading = false;
-        if (err && err.error && err.error.message) {
-          this.errorMessage = err.error.message;
-        } else {
-          this.errorMessage = err;
-        }
-
-        this.invalidInput = true;
+        this.showError(err);
       }
     );
   }
 
-  resetAfterCreateNewLocation() {
+  resetPage() {
     this.loading = false;
     this.modalService.dismissAll();
     this.newLocation = new Location();
   }
 
-  saveLocationChanges() {
-    this.loading = true;
+  updateLocationArmedState() {
+    this.selectedLocation.armed = !this.selectedLocation.armed;
 
-    this.locationService.updateLocation(this.selectedLocation).subscribe(
+    this.locationService.updateLocationArmedState(this.selectedLocation).subscribe(
       response => {
-        this.invalidInput = false;
         this.getAllLocations();
-        this.loading = false;
-        $("#locationDetailsModal").modal("hide");
-        this.successMessage = "Modified successfully";
+        this.successMessage = `${this.selectedLocation.armed == true ? 'Armed' : 'Disarmed'} successfully`;
         this.successResult = true;
       },
       err => {
-        this.loading = false;
-
-        $("#locationDetailsModal").modal("hide");
-
-        if (err.error.message) {
-          this.errorMessage = err.error.message;
-        } else {
-          this.errorMessage = err;
-        }
-
-        this.invalidInput = true;
+        this.showError(err);
+        this.resetPage();
       }
     );
   }
@@ -129,25 +101,17 @@ export class LocationsComponent extends BaseComponent implements OnInit {
   createNewLocation() {
     this.loading = true;
 
-    console.log(this.newLocation);
-
     this.locationService.createNewLocation(this.newLocation).subscribe(
       response => {
         this.invalidInput = false;
         this.getAllLocations();
-        this.resetAfterCreateNewLocation();
+        this.resetPage();
         this.successMessage = "Saved successfully";
         this.successResult = true;
       },
       err => {
-        if (err.error.message) {
-          this.errorMessage = err.error.message;
-        } else {
-          this.errorMessage = err;
-        }
-
-        this.invalidInput = true;
-        this.resetAfterCreateNewLocation();
+        this.showError(err);
+        this.resetPage();
       }
     );
   }

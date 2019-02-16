@@ -6,10 +6,10 @@ import { LocationsComponent } from "./locations/locations.component";
 import { RegisterComponent } from "./register/register.component";
 import { HomeComponent } from "./home/home.component";
 import { PrivacyComponent } from "./privacy/privacy.component";
-import { ModulesComponent } from "./modules/modules.component";
+import { ManageLocationComponent } from "./manage-location/manage-location.component";
 
 const routes: Routes = [
-  
+
   { path: "", component: HomeComponent },
   { path: "home", component: HomeComponent },
   { path: "login", component: LoginComponent },
@@ -20,16 +20,16 @@ const routes: Routes = [
     component: LocationsComponent,
     canActivate: [AuthGuard]
   },
-  { 
-    path: "modules/:locationId", 
-    component: ModulesComponent, 
+  {
+    path: "managelocation/:locationId",
+    component: ManageLocationComponent,
     canActivate: [AuthGuard]
-   },
-   { path: "**", redirectTo: "/", pathMatch: "full" },
+  },
+  { path: "**", redirectTo: "/", pathMatch: "full" },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

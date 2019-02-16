@@ -1,0 +1,80 @@
+<h1 class="text-center">Register</h1>
+<hr>
+<div class="jumbotron">
+  <form #registerForm="ngForm" (ngSubmit)="register()" ngNativeValidate>
+
+    <div class="row justify-content-center">
+      <div class="col-md-7">
+
+        <div *ngIf="invalidInput" class="row">
+          <div class="col">
+            <div class="alert alert-danger text-center">
+              <p>{{errorMessage}}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email address</label>
+          <input [(ngModel)]="registerCredentials.email" id="email" name="email" type="email" class="form-control"
+            placeholder="Enter your email address" required>
+          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+
+        <div class="form-group">
+          <label for="fullName">Full name</label>
+          <input [(ngModel)]="registerCredentials.fullName" id="fullName" name="fullName" class="form-control"
+            placeholder="Enter your name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="phoneNumber">Phone number</label>
+          <input [(ngModel)]="registerCredentials.phoneNumber" id="phoneNumber" name="phoneNumber" class="form-control"
+            placeholder="Enter your phone number" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input [(ngModel)]="registerCredentials.password" id="password" name="password" type="password" autocomplete="new-password"
+            class="form-control" placeholder="Enter your password" required>
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">Confirm password</label>
+          <input [(ngModel)]="registerCredentials.confirmPassword" id="confirmPassword" name="confirmPassword" type="password"
+            class="form-control" autocomplete="new-password" placeholder="Confirm your password" required>
+        </div>
+
+        <div class="form-group">
+          <div class="form-check">
+            <label class="form-check-label">
+              <input [(ngModel)]="registerCredentials.acceptedTerms" id="acceptedTerms" name="acceptedTerms" class="form-check-input"
+                type="checkbox">
+              I accept the privacy policy/terms
+            </label>
+          </div>
+        </div>
+        <div class="form-group text-center">
+            <a routerLink="/privacy" class="text-center">
+              <p class="text-secondary">Privacy Policy</p>
+           </a>
+        </div>
+
+        <div class="form-group text-center">
+          <button [disabled]="!registerCredentials.isValid()" class="btn btn-secondary btn-block btn-lg" type="submit">Register</button>
+          <img *ngIf="loading" class="pl-3" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+        </div>
+
+        <div class="row text-center">
+          <div class="col">
+            <div class="form-group">
+              <a routerLink="/login" class="btn btn-link text-center">Login</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </form>
+</div>

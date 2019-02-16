@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 
-  <a class="navbar-brand" routerLink="/">Home</a>
+  <a class="navbar-brand" routerLink="/"><img src="../../assets/img/lock.png" style="width: 30px;"></a>
 
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor" aria-controls="navbarColor"
     aria-expanded="false" aria-label="Toggle navigation">
@@ -27,10 +27,16 @@
         <a class="nav-link" routerLinkActive='active' routerLink="/locations">Locations</a>
       </li>
 
-      <li class="nav-item">
-        <a class="nav-link" (click)="open(content)">Sign Out</a>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          {{userEmail}}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" (click)="open(content)">Sign Out</a>
+        </div>
       </li>
-      
+
     </ul>
 
   </div>
@@ -40,7 +46,7 @@
 
 <ng-template #content let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Log out</h4>
+    <h4 class="modal-title" id="logoutModal">Log out</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
       <span aria-hidden="true">&times;</span>
     </button>

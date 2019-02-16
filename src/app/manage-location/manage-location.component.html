@@ -1,0 +1,477 @@
+<h2 class="text-center">Manage Location</h2>
+<hr>
+
+<div class="row">
+  <div class="col">
+    <a [routerLink]="['/locations']" class="btn btn-outline-secondary" data-dismiss="modal">Locations</a>
+  </div>
+</div>
+
+<div *ngIf="invalidInput" class="row justify-content-center">
+  <div class="alert alert-danger alert-dismissible fade show col-md-7" role="alert">
+
+    <p class="text-center">{{errorMessage}}</p>
+
+    <button type="button" class="close" (click)="invalidInput=false;" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+</div>
+
+<div *ngIf="successResult" class="row justify-content-center">
+  <div class="alert alert-success alert-dismissible fade show col-md-7" role="alert">
+
+    <p class="text-center">{{successMessage}}</p>
+
+    <button type="button" class="close" (click)="successResult=false;" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+</div>
+
+<section id="tabs" class="project-tab">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <nav>
+          <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+
+            <a class="nav-item nav-link active" id="nav-modules-tab" data-toggle="tab" href="#nav-modules" role="tab"
+              aria-controls="nav-modules" aria-selected="true">Modules</a>
+
+            <a class="nav-item nav-link" id="nav-events-tab" data-toggle="tab" href="#nav-events" role="tab"
+              aria-controls="nav-events" aria-selected="true">Events</a>
+
+            <a class="nav-item nav-link" id="nav-history-tab" data-toggle="tab" href="#nav-history" role="tab"
+              aria-controls="nav-history" aria-selected="true">History</a>
+
+            <a class="nav-item nav-link" id="nav-users-tab" data-toggle="tab" href="#nav-users" role="tab"
+              aria-controls="nav-users" aria-selected="false">Users</a>
+
+          </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+          <div class="tab-pane fade show active" id="nav-modules" role="tabpanel" aria-labelledby="nav-modules-tab">
+
+            <div class="row create-button">
+              <div class="col">
+                <p>
+                  <button type="button" class="btn btn-outline-primary" data-toggle="modal"
+                    data-target="#addNewModuleModal">
+                    Add New Module
+                  </button>
+                </p>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col">
+
+                <ngx-datatable [rows]="modules" [headerHeight]="50" [footerHeight]="50" [columnMode]="'force'"
+                  [limit]="10" [selectionType]="'single'" [loadingIndicator]="loading" (select)='onModuleSelect($event)'
+                  [rowHeight]="'auto'" [summaryPosition]="'bottom'" [reorderable]="reorderable"
+                  class="material striped">
+
+                  <ngx-datatable-column name="name">
+                    <ng-template let-column="column" ngx-datatable-header-template>
+                      Name
+                    </ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                      {{value}}
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                  <ngx-datatable-column name="stateDisplayed">
+                    <ng-template let-column="column" ngx-datatable-header-template>
+                      Status
+                    </ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                      {{value}}
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                  <ngx-datatable-column name="relativeLastHeartbeat">
+                    <ng-template let-column="column" ngx-datatable-header-template>
+                      Last Heartbeat
+                    </ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                      {{value}}
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                  <ngx-datatable-column name="relativeLastBoot">
+                    <ng-template let-column="column" ngx-datatable-header-template>
+                      Last Boot
+                    </ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                      {{value}}
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                </ngx-datatable>
+
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="nav-events" role="tabpanel" aria-labelledby="nav-events-tab">
+            <div class="row">
+              <div class="col">
+                <ngx-datatable [rows]="moduleEvents" [headerHeight]="50" [footerHeight]="50" [columnMode]="'force'"
+                  [limit]="10" [loadingIndicator]="loading" [rowHeight]="'auto'" [summaryPosition]="'bottom'"
+                  class="material striped">
+
+                  <ngx-datatable-column name="stateDisplayed">
+                    <ng-template let-column="column" ngx-datatable-header-template>
+                      Action
+                    </ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                      {{value}}
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                  <ngx-datatable-column name="moduleName">
+                    <ng-template let-column="column" ngx-datatable-header-template>
+                      Module
+                    </ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                      {{value}}
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                  <ngx-datatable-column name="dateCreated">
+                    <ng-template let-column="column" ngx-datatable-header-template>
+                      Event Time
+                    </ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                      {{getFormattedDate(value)}}
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                </ngx-datatable>
+
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="nav-history" role="tabpanel" aria-labelledby="nav-history-tab">
+            <div class="row">
+              <div class="col">
+                <ngx-datatable [rows]="locationEvents" [headerHeight]="50" [footerHeight]="50" [columnMode]="'force'"
+                  [limit]="10" [loadingIndicator]="loading" [rowHeight]="'auto'" [summaryPosition]="'bottom'"
+                  class="material striped">
+
+                  <ngx-datatable-column name="actionEvent">
+                    <ng-template let-column="column" ngx-datatable-header-template>
+                      Action Event
+                    </ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                      {{value}}
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                  <ngx-datatable-column name="caller">
+                    <ng-template let-column="column" ngx-datatable-header-template>
+                      Caller
+                    </ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                      {{value}}
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                  <ngx-datatable-column name="dateCreated">
+                    <ng-template let-column="column" ngx-datatable-header-template>
+                      Event Time
+                    </ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                      {{getFormattedDate(value)}}
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                </ngx-datatable>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="nav-users" role="tabpanel" aria-labelledby="nav-users-tab">
+            <div class="row create-button">
+              <div class="col">
+                <p>
+                  <button type="button" class="btn btn-outline-primary" data-toggle="modal"
+                    data-target="#addNewLocationUserModal">Add
+                    New Location User
+                  </button>
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <ngx-datatable [rows]="locationUsers" [headerHeight]="50" [footerHeight]="50" [columnMode]="'force'"
+                  [limit]="10" [loadingIndicator]="loading" [rowHeight]="'auto'" [summaryPosition]="'bottom'"
+                  class="material striped">
+
+                  <ngx-datatable-column name="email">
+                    <ng-template let-column="column" ngx-datatable-header-template>
+                      Email
+                    </ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                      {{value}}
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                  <ngx-datatable-column name="name">
+                    <ng-template let-column="column" ngx-datatable-header-template>
+                      Name
+                    </ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                      {{value}}
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                  <ngx-datatable-column name="dateCreated">
+                    <ng-template let-column="column" ngx-datatable-header-template>
+                      Added
+                    </ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                      {{getFormattedShortDate(value)}}
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                  <ngx-datatable-column name="id">
+                    <ng-template let-column="column" ngx-datatable-header-template>
+
+                    </ng-template>
+                    <ng-template let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                      <button (click)="selectUserToDelete(rowIndex)" class="btn btn-outline-danger" data-toggle="modal"
+                        data-target="#deleteUserModal">
+                        <span class="fa fa-trash-o" aria-hidden="true"></span>
+                      </button>
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                </ngx-datatable>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<div class="modal" id="addNewLocationUserModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Add New Location User</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label>User Email</label>
+              <input class="form-control" [(ngModel)]="newLocationUser.email" required
+                placeholder="Please enter the email of the new location user">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" data-dismiss="modal" class="btn btn-primary" [disabled]="!newLocationUser.isValidEmail()"
+          (click)="addNewLocationUser()">
+          Add New Location User
+        </button>
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" autofocus>
+          Cancel
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="addNewModuleModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Add New Module</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="row">
+          <div class="col">
+
+            <div class="form-group">
+              <label>Module Name</label>
+              <input class="form-control" [(ngModel)]="newModuleToAdd.name" required
+                placeholder="Please enter the name of the new module">
+            </div>
+
+            <div class="form-group">
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input id="isMotionDetector" name="isMotionDetector" [(ngModel)]="newModuleToAdd.isMotionDetector"
+                    class="form-check-input" type="checkbox">
+                  Is this module a motion detector?
+                </label>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" data-dismiss="modal" class="btn btn-primary" [disabled]="!newModuleToAdd.isValidModule()"
+          (click)="createNewModule()">
+          Add New Module
+        </button>
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" autofocus>
+          Cancel
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="moduleDetailsModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{selectedModule.name}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label>Current State:</label>
+              <input name="name" class="form-control" [(ngModel)]="selectedModule.stateDisplayed" disabled>
+            </div>
+
+            <div class="form-group">
+              <label>Last Heartbeat:</label>
+              <input name="name" class="form-control" [(ngModel)]="selectedModule.lastHeartbeat" disabled>
+            </div>
+
+            <div class="form-group">
+              <label>Last Boot:</label>
+              <input name="name" class="form-control" [(ngModel)]="selectedModule.lastBoot" disabled>
+            </div>
+
+            <div class="form-group">
+              <label>Module Id</label>
+              <input name="name" class="form-control" [(ngModel)]="selectedModule.id" disabled>
+            </div>
+
+            <div class="form-group">
+              <div class="row">
+                <div class="col">
+                  <button type="button" class="btn btn-outline-primary btn-block" data-dismiss="modal"
+                    (click)="copyToClipboard(selectedModule.id)">Copy
+                    Module Id To Clipboard</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="row text-center">
+                <div class="col">
+                  <button type="button" class="btn btn-outline-danger" aria-label="Left Align" data-dismiss="modal"
+                    data-toggle="modal" data-target="#deleteModuleModal">
+                    <span class="fa fa-trash-o fa-lg" aria-hidden="true"></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="deleteModuleModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Delete {{selectedModule.name}}?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="row">
+          <div class="col">
+            <p>Are you sure you want to delete: {{selectedModule.name}}?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" data-dismiss="modal" class="btn btn-danger" (click)="deleteSelectedModule()">
+          Delete
+        </button>
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" autofocus>
+          Cancel
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="deleteUserModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Delete Location User</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="row">
+          <div class="col">
+            <p>Are you sure you want to delete user: {{userToDelete.email}}?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" data-dismiss="modal" class="btn btn-danger" (click)="deleteSelectedLocationUser()">
+          Delete
+        </button>
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" autofocus>
+          Cancel
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
